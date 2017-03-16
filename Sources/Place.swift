@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CoreLocation
 import DataStore
 
 public class Place: DataStoreContentJSONDictionary<String,Any> {
