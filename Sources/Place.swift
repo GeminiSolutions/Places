@@ -26,7 +26,7 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
             return content["name"] as? String
         }
         set {
-            set(newValue!, for: "name")
+            set(newValue, for: "name")
         }
     }
 
@@ -35,7 +35,7 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
             return content["address"] as? String
         }
         set {
-            set(newValue!, for: "address")
+            set(newValue, for: "address")
         }
     }
 
@@ -44,7 +44,7 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
             return content["phone"] as? String
         }
         set {
-            set(newValue!, for: "phone")
+            set(newValue, for: "phone")
         }
     }
 
@@ -53,7 +53,7 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
             return content["url"] as? String
         }
         set {
-            set(newValue!, for: "url")
+            set(newValue, for: "url")
         }
     }
 
@@ -62,7 +62,7 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
             return content["latitude"] as? Double
         }
         set {
-            set(newValue!, for: "latitude")
+            set(newValue, for: "latitude")
         }
     }
     
@@ -71,7 +71,14 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
             return content["longitude"] as? Double
         }
         set {
-            set(newValue!, for: "longitude")
+            set(newValue, for: "longitude")
+        }
+    }
+    
+    public var coordinate: PlaceCoordinate2D? {
+        get {
+            guard let latitude = self.latitude, let longitude = self.longitude else { return nil }
+            return PlaceCoordinate2D(latitude, longitude)
         }
     }
     
