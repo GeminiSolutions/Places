@@ -9,7 +9,7 @@ import Foundation
 import DataStore
 
 public class PlacesList: DataStoreContentJSONArray<Place.JSONObjectType> {
-    var places: [Place] {
+    public var places: [Place] {
         var places: [Place] = []
         content.forEach {
             guard let place = Place(content: $0) else { return }
