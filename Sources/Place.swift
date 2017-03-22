@@ -39,6 +39,15 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
         }
     }
 
+    public var phoneNumber: String? {
+        get {
+            return content["phone"] as? String
+        }
+        set {
+            set(newValue!, for: "phone")
+        }
+    }
+
     public var url: String? {
         get {
             return content["url"] as? String
