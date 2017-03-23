@@ -80,6 +80,10 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
             guard let latitude = self.latitude, let longitude = self.longitude else { return nil }
             return PlaceCoordinate2D(latitude, longitude)
         }
+        set {
+            self.latitude = newValue?.latitude
+            self.longitude = newValue?.longitude
+        }
     }
     
     public override init() {
