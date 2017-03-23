@@ -45,7 +45,7 @@ public class PlacesClient {
         })
     }
     
-    public func search(for searchString: String, region: PlacesRegion, completion: @escaping PlacesBlock) {
+    public func search(for searchString: String, in region: PlacesRegion, completion: @escaping PlacesBlock) {
         let placesList = PlacesList()
         dataStore.getItems(query(from: searchString, in: region), nil, placesList, { (error) in
             completion(placesList.places, error)

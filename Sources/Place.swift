@@ -12,6 +12,12 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
     public typealias PlaceIdType = Int
     public typealias JSONObjectType = [String:Any]
 
+    public static let AddressStreetKey = "street"
+    public static let AddressCityKey = "city"
+    public static let AddressStateKey = "state"
+    public static let AddressPostalCodeKey = "postal_code"
+    public static let AddressCountryKey = "counutry"
+    
     public var id: PlaceIdType? {
         get {
             return content["id"] as? PlaceIdType
@@ -30,9 +36,9 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
         }
     }
 
-    public var address: String? {
+    public var addressDictionary: [String:String]? {
         get {
-            return content["address"] as? String
+            return content["address"] as? [String:String]
         }
         set {
             set(newValue, for: "address")
@@ -85,7 +91,29 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
             self.longitude = newValue?.longitude
         }
     }
-    
+
+    public var formattedAddress: String? {
+        var addressComponents = [String]()
+        
+        if let street = addressDictionary?[Place.AddressStreetKey] {
+            addressComponents.append(street)
+        }
+        if let city = addressDictionary?[Place.AddressCityKey] {
+            addressComponents.append(city)
+        }
+        if let postalCode = addressDictionary?[Place.AddressPostalCodeKey] {
+            addressComponents.append(postalCode)
+        }
+        if let state = addressDictionary?[Place.AddressStateKey] {
+            addressComponents.append(state)
+        }
+        if let country = addressDictionary?[Place.AddressCountryKey] {
+            addressComponents.append(country)
+        }
+
+        return addressComponents.joined(separator: ", ")
+    }
+
     public override init() {
         super.init()
     }
