@@ -63,6 +63,15 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
         }
     }
 
+    public var tags: [String]? {
+        get {
+            return content["tags"] as? [String]
+        }
+        set {
+            set(newValue, for: "tags")
+        }
+    }
+
     public var latitude: Double? {
         get {
             return content["latitude"] as? Double
