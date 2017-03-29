@@ -32,8 +32,8 @@ public class PlacesClient {
         })
     }
     
-    public func remove(place: Place, completion: @escaping ErrorBlock) {
-        dataStore.removeItem(id: "\(place.id)") { (error) in
+    public func remove(placeId: String, completion: @escaping ErrorBlock) {
+        dataStore.removeItem(id: placeId) { (error) in
             completion(error)
         }
     }
