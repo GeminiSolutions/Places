@@ -133,7 +133,7 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
     }
 
     class public func placeIdFromString(_ string: String) -> PlaceIdType? {
-        return Int(string)
+        return PlaceIdType(string)
     }
 
     class public func stringFromPlaceId(_ placeId: PlaceIdType) -> String? {
