@@ -8,6 +8,10 @@
 import Foundation
 import DataStore
 
+public enum PlacesClientError: Error {
+    case invalidPlaceId
+}
+
 public class PlacesClient {
     public typealias ErrorBlock = (Error?) -> Void
     public typealias IntBlock = (Int, Error?) -> Void
@@ -32,8 +36,12 @@ public class PlacesClient {
         })
     }
     
-    public func remove(placeId: String, completion: @escaping ErrorBlock) {
-        dataStore.removeItem(id: placeId) { (error) in
+    public func remove(placeId: Place.PlaceIdType, completion: @escaping ErrorBlock) {
+        guard let itemId = Place.stringFromPlaceId(placeId) else {
+            completion(PlacesClientError.invalidPlaceId)
+            return
+        }
+        dataStore.removeItem(id: itemId) { (error) in
             completion(error)
         }
     }

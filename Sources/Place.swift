@@ -132,6 +132,14 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
         super.init(json: content)
     }
 
+    class public func placeIdFromString(_ string: String) -> PlaceIdType? {
+        return Int(string)
+    }
+
+    class public func stringFromPlaceId(_ placeId: PlaceIdType) -> String? {
+        return String(placeId)
+    }
+    
     class public func validate(_ json: JSONObjectType) -> Bool {
         guard json.keys.contains("name") else { return false }
         guard json.keys.contains("latitude") else { return false }
