@@ -77,7 +77,7 @@ public class PlacesClient {
         })
     }
 
-    public func update(_ place: Place, completion: @escaping PlaceBlock) {
+    public func update(place: Place, completion: @escaping PlaceBlock) {
         let newPlace = Place()
         guard let placeId = place.id, let itemId = Place.stringFromPlaceId(placeId) else {
             completion(newPlace, PlacesClientError.invalidPlaceId)

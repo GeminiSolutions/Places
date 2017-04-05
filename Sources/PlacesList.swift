@@ -18,6 +18,14 @@ public class PlacesList: DataStoreContentJSONArray<Place.JSONObjectType> {
         return places
     }
 
+    public override init() {
+        super.init()
+    }
+
+    public init(places: [Place.JSONObjectType]) {
+        super.init(json: places)
+    }
+
     public func place(for id: Place.PlaceIdType) -> Place? {
         for placeContent in content {
             guard let place = Place(content: placeContent) else { continue }
