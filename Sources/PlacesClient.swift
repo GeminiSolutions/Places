@@ -17,6 +17,8 @@ public class PlacesClient {
     public typealias IntBlock = (Int, Error?) -> Void
     public typealias PlaceBlock = (Place, Error?) -> Void
     public typealias PlacesBlock = ([Place], Error?) -> Void
+    public typealias PlaceIdsBlock = ([Place.PlaceIdType], Error?) -> Void
+    public typealias PlaceTagsBlock = ([String], Error?) -> Void
 
     private var dataStore: DataStoreClient
 
@@ -33,6 +35,20 @@ public class PlacesClient {
         let placesCount = PlacesCount()
         dataStore.getItemsCount(placesCount, { (error) in
             completion(placesCount.value, error)
+        })
+    }
+
+    public func placesIds(range: Range<Int>?, completion: @escaping PlaceIdsBlock) {
+        let placeIdsList = PlaceIdsList()
+        dataStore.getItemsIdentifiers(range, placeIdsList, { (error) in
+            completion(placeIdsList.placeIds, error)
+        })
+    }
+
+    public func placesTags(completion: @escaping PlaceTagsBlock) {
+        let placeTagsList = PlaceTagsList()
+        dataStore.getItemsTags(placeTagsList, { (error) in
+            completion(placeTagsList.placeTags, error)
         })
     }
 

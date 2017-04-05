@@ -11,7 +11,8 @@ import DataStore
 public protocol PlacesServerDelegate {
     func getPlaces(for queryString: String?, in region: PlacesRegion?, range: Range<Int>?) -> PlacesList?
     func getPlacesCount() -> PlacesCount?
-    func getPlacesIds() -> PlaceIdsList?
+    func getPlacesIds(range: Range<Int>?) -> PlaceIdsList?
+    func getPlacesTags() -> PlaceTagsList?
     func createPlace(_ place: Place) -> Place?
     func getPlace(for id: Place.PlaceIdType) -> Place?
     func updatePlace(for id: Place.PlaceIdType, with place: Place) -> Place?
@@ -55,10 +56,14 @@ fileprivate class DataStoreServerDelegateForPlaces : DataStoreServerDelegate {
         return delegate.getPlacesCount()
     }
 
-    func getItemsIdentifiers() -> DataStoreContent? {
-        return delegate.getPlacesIds()
+    func getItemsIdentifiers( _ range: Range<Int>?) -> DataStoreContent? {
+        return delegate.getPlacesIds(range: range)
     }
 
+    func getItemsTags() -> DataStoreContent? {
+        return delegate.getPlacesTags()
+    }
+    
     func getItem(_ itemId: String) -> DataStoreContent? {
         guard let placeId = Place.placeIdFromString(itemId) else { return nil }
         return delegate.getPlace(for: placeId)
