@@ -22,8 +22,11 @@ public class PlacesClient {
 
     private var dataStore: DataStoreClient
 
-    private func query(from searchString: String, in region: PlacesRegion) -> [String:String] {
-        let query = ["name":searchString, "region":"\(region.northEast.latitude),\(region.northEast.longitude),\(region.southWest.latitude),\(region.southWest.longitude)"]
+    private func query(from searchString: String, in region: PlacesRegion, tags: [String]) -> [String:String] {
+        var query = [String:String]()
+        query["name"] = searchString
+        query["region"] = "\(region.northEast.latitude),\(region.northEast.longitude),\(region.southWest.latitude),\(region.southWest.longitude)"
+        if tags.count > 0 { query["tags"] = tags.reduce("", { return ($0.isEmpty ? "" : $0+",") + $1 }) }
         return query
     }
 
@@ -52,9 +55,9 @@ public class PlacesClient {
         })
     }
 
-    public func search(for searchString: String, in region: PlacesRegion, range: Range<Int>?, completion: @escaping PlacesBlock) {
+    public func search(for searchString: String, in region: PlacesRegion, tags: [String], range: Range<Int>?, completion: @escaping PlacesBlock) {
         let placesList = PlacesList()
-        dataStore.getItems(query(from: searchString, in: region), range, placesList, { (error) in
+        dataStore.getItems(query(from: searchString, in: region, tags: tags), range, placesList, { (error) in
             completion(placesList.places, error)
         })
     }

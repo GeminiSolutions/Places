@@ -9,7 +9,7 @@ import Foundation
 import DataStore
 
 public protocol PlacesServerDelegate {
-    func getPlaces(for queryString: String?, in region: (Double, Double, Double, Double)?, range: Range<Int>?) -> [Place.JSONObjectType]?
+    func getPlaces(for queryString: String?, in region: (Double, Double, Double, Double)?, tags: [String]?, range: Range<Int>?) -> [Place.JSONObjectType]?
     func getPlacesCount() -> Int
     func getPlacesIds(range: Range<Int>?) -> [Place.PlaceIdType]?
     func getPlacesTags() -> [String]?
@@ -41,13 +41,22 @@ fileprivate class DataStoreServerDelegateForPlaces : DataStoreServerDelegate {
         return PlacesRegion(PlaceCoordinate2D(neLat, neLong), PlaceCoordinate2D(swLat, swLong))
     }
 
+    private func placesTags(from string: String) -> [String]? {
+        let components = string.components(separatedBy: ",")
+        return components.isEmpty ? nil : components
+    }
+
     public func getItems(_ query: [String:String]?, _ range: Range<Int>?) -> DataStoreContent? {
         let queryString = query?["name"]
         var regionData: (Double, Double, Double, Double)?
         if let regionString = query?["region"], let region = placesRegion(from: regionString) {
             regionData = (region.northEast.latitude, region.northEast.longitude, region.southWest.latitude, region.southWest.longitude)
         }
-        guard let places = delegate.getPlaces(for: queryString, in: regionData, range: range) else { return nil }
+        var tags: [String]?
+        if let tagsString = query?["tags"] {
+            tags = placesTags(from: tagsString)
+        }
+        guard let places = delegate.getPlaces(for: queryString, in: regionData, tags: tags, range: range) else { return nil }
         return PlacesList(places: places)
     }
 
