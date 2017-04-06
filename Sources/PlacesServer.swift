@@ -10,9 +10,9 @@ import DataStore
 
 public protocol PlacesServerDelegate {
     func getPlaces(for queryString: String?, in region: (Double, Double, Double, Double)?, tags: [String]?, range: Range<Int>?) -> [Place.JSONObjectType]?
-    func getPlacesCount() -> Int
+    func getPlacesCount() -> Int?
     func getPlacesIds(range: Range<Int>?) -> [Place.PlaceIdType]?
-    func getPlacesTags() -> [String]?
+    func getPlacesMetadata() -> PlacesMetadata.JSONObjectType?
     func createPlace(content: Place.JSONObjectType) -> Place.JSONObjectType?
     func getPlace(for id: Place.PlaceIdType) -> Place.JSONObjectType?
     func updatePlace(for id: Place.PlaceIdType, with content: Place.JSONObjectType) -> Place.JSONObjectType?
@@ -67,15 +67,12 @@ fileprivate class DataStoreServerDelegateForPlaces : DataStoreServerDelegate {
     }
 
     func getItemsMetadata() -> DataStoreContent? {
-        guard let tags = delegate.getPlacesTags() else { return nil }
-        let metadata = PlacesMetadata()
-        metadata.tags = tags
-        return metadata
+        guard let metadata = delegate.getPlacesMetadata() else { return nil }
+        return PlacesMetadata(content: metadata)
     }
     
     func getItemsCount() -> DataStoreContent? {
-        let count = delegate.getPlacesCount()
-        guard count >= 0 else { return nil }
+        guard let count = delegate.getPlacesCount() else { return nil }
         return PlacesCount(count: count)
     }
 
