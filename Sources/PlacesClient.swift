@@ -18,7 +18,7 @@ public class PlacesClient {
     public typealias PlaceBlock = (Place, Error?) -> Void
     public typealias PlacesBlock = ([Place], Error?) -> Void
     public typealias PlaceIdsBlock = ([Place.PlaceIdType], Error?) -> Void
-    public typealias PlaceTagsBlock = ([String], Error?) -> Void
+    public typealias PlacesTagsBlock = ([String], Error?) -> Void
 
     private var dataStore: DataStoreClient
 
@@ -48,10 +48,10 @@ public class PlacesClient {
         })
     }
 
-    public func placesTags(completion: @escaping PlaceTagsBlock) {
-        let placeTagsList = PlaceTagsList()
-        dataStore.getItemsTags(placeTagsList, { (error) in
-            completion(placeTagsList.placeTags, error)
+    public func placesTags(completion: @escaping PlacesTagsBlock) {
+        let placesMetadata = PlacesMetadata()
+        dataStore.getItemsMetadata(placesMetadata, { (error) in
+            completion(placesMetadata.tags ?? [], error)
         })
     }
 

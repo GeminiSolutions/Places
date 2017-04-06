@@ -66,6 +66,13 @@ fileprivate class DataStoreServerDelegateForPlaces : DataStoreServerDelegate {
         return Place(content: newPLace)
     }
 
+    func getItemsMetadata() -> DataStoreContent? {
+        guard let tags = delegate.getPlacesTags() else { return nil }
+        let metadata = PlacesMetadata()
+        metadata.tags = tags
+        return metadata
+    }
+    
     func getItemsCount() -> DataStoreContent? {
         let count = delegate.getPlacesCount()
         guard count >= 0 else { return nil }
@@ -75,11 +82,6 @@ fileprivate class DataStoreServerDelegateForPlaces : DataStoreServerDelegate {
     func getItemsIdentifiers( _ range: Range<Int>?) -> DataStoreContent? {
         guard let ids = delegate.getPlacesIds(range: range) else { return nil }
         return PlaceIdsList(ids: ids)
-    }
-
-    func getItemsTags() -> DataStoreContent? {
-        guard let tags = delegate.getPlacesTags() else { return nil }
-        return PlaceTagsList(tags: tags)
     }
 
     func getItem(_ itemId: String) -> DataStoreContent? {
