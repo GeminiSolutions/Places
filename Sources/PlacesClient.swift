@@ -31,7 +31,7 @@ public class PlacesClient {
     }
 
     public init(transport: DataStoreClientTransport) {
-        dataStore = DataStoreClient(transport: transport)
+        dataStore = DataStoreClient(transport: transport, basePath: "/places")
     }
 
     public func placesCount(completion: @escaping IntBlock) {
