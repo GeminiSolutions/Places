@@ -6,9 +6,7 @@ class PlacesTests: XCTestCase {
         XCTAssertNil(Place().name)
     }
 
-    static var allTests : [(String, (PlacesTests) -> () throws -> Void)] {
-        return [
-            ("testPlace", testPlace),
-        ]
-    }
+    static var allTests = [
+        ("testPlace", testPlace),
+    ]
 }

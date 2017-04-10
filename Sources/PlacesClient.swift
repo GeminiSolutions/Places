@@ -20,6 +20,11 @@ public class PlacesClient {
     public typealias PlaceIdsBlock = ([Place.PlaceIdType], Error?) -> Void
     public typealias PlacesTagsBlock = ([String], Error?) -> Void
 
+    public var authToken: String? {
+        get { return dataStore.authToken }
+        set { dataStore.authToken = newValue }
+    }
+
     private var dataStore: DataStoreClient
 
     private func query(from searchString: String, in region: PlacesRegion, tags: [String]) -> [String:String] {
