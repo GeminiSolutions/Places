@@ -12,9 +12,12 @@ public enum PlacesClientError: Error {
     case invalidPlaceId
 }
 
+public typealias PlaceIdsList = DataStoreItemIdsList<Place.PlaceIdType>
+public typealias PlacesCount = DataStoreItemsCountJSON
+
 public class PlacesClient {
     public typealias ErrorBlock = (Error?) -> Void
-    public typealias IntBlock = (Int, Error?) -> Void
+    public typealias UInt64Block = (UInt64, Error?) -> Void
     public typealias PlaceBlock = (Place, Error?) -> Void
     public typealias PlacesBlock = ([Place], Error?) -> Void
     public typealias PlaceIdsBlock = ([Place.PlaceIdType], Error?) -> Void
@@ -39,7 +42,7 @@ public class PlacesClient {
         dataStore = DataStoreClient(transport: transport, basePath: "/places")
     }
 
-    public func placesCount(completion: @escaping IntBlock) {
+    public func placesCount(completion: @escaping UInt64Block) {
         let placesCount = PlacesCount()
         dataStore.getItemsCount(placesCount, { (error) in
             completion(placesCount.value, error)
@@ -49,7 +52,7 @@ public class PlacesClient {
     public func placesIds(range: Range<Int>?, completion: @escaping PlaceIdsBlock) {
         let placeIdsList = PlaceIdsList()
         dataStore.getItemsIdentifiers(range, placeIdsList, { (error) in
-            completion(placeIdsList.placeIds, error)
+            completion(placeIdsList.itemIds, error)
         })
     }
 
