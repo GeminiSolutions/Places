@@ -45,6 +45,15 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
         }
     }
 
+    public var description: String? {
+        get {
+            return content["description"] as? String
+        }
+        set {
+            set(newValue, for: "description")
+        }
+    }
+
     public var phoneNumber: String? {
         get {
             return content["phone"] as? String
@@ -69,6 +78,15 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
         }
         set {
             set(newValue, for: "tags")
+        }
+    }
+
+    public var mediaItems: [String]? {
+        get {
+            return content["media"] as? [String]
+        }
+        set {
+            set(newValue, for: "media")
         }
     }
 
