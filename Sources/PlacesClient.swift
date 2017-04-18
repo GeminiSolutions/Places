@@ -12,7 +12,7 @@ public enum PlacesClientError: Error {
     case invalidPlaceId
 }
 
-public typealias PlaceIdsList = DataStoreItemIdsList<Place.PlaceIdType>
+public typealias PlaceIdsList = DataStoreItemIdsListJSON<Place.PlaceIdType>
 public typealias PlacesCount = DataStoreItemsCountJSON
 
 public class PlacesClient {
