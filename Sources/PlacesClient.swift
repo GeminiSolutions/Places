@@ -34,7 +34,7 @@ public class PlacesClient {
         var query = [String:String]()
         query["name"] = searchString
         query["region"] = "\(region.northEast.latitude),\(region.northEast.longitude),\(region.southWest.latitude),\(region.southWest.longitude)"
-        if tags.count > 0 { query["tags"] = tags.reduce("", { return ($0.isEmpty ? "" : $0+",") + $1 }) }
+        if tags.count > 0 { query["tags"] = tags.reduce("", { ($0.isEmpty ? "" : $0+",") + $1 }) }
         return query
     }
 
