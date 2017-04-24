@@ -18,6 +18,8 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
     public static let AddressPostalCodeKey = "postal_code"
     public static let AddressCountryKey = "counutry"
     
+    public var lastModified: Date?
+
     public var id: PlaceIdType? {
         get {
             return content["id"] as? PlaceIdType
