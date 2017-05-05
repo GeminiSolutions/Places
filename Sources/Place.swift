@@ -20,14 +20,7 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
     
     public var lastModified: Date?
 
-    public var id: PlaceIdType? {
-        get {
-            return content["id"] as? PlaceIdType
-        }
-        set {
-            set(newValue, for: "id")
-        }
-    }
+    public var id: PlaceIdType?
 
     public var name: String? {
         get {
