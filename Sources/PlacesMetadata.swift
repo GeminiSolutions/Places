@@ -20,9 +20,9 @@ public class PlacesMetadata: DataStoreContentJSONDictionary<String,Any> {
         super.init(json: content)
     }
 
-    public var fields: [[String:String]]? {
+    public var fields: [[String:Any]]? {
         get {
-            return content["fields"] as? [[String:String]]
+            return content["fields"] as? [[String:Any]]
         }
         set {
             set(newValue, for: "fields")

@@ -160,9 +160,14 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
         return true
     }
 
-    class public var Fields: [[String:String]] {
+    class public var Fields: [[String:Any]] {
         return [["name":"name", "label": "Name", "type":"String", "required":"true"],
-                ["name":"address", "label": "Address", "type":"Dictionary<String:String>", "required":"false"],
+                ["name":"address", "label": "Address", "type":"Dictionary<String:String>", "required":"false", "fields" : [
+                    ["name": Place.AddressStreetKey, "label": Place.AddressStreetKey.capitalized, "type":"String", "required":"false"],
+                    ["name": Place.AddressCityKey, "label": Place.AddressCityKey.capitalized, "type":"String", "required":"false"],
+                    ["name": Place.AddressStateKey, "label": Place.AddressStateKey.capitalized, "type":"String", "required":"false"],
+                    ["name": Place.AddressPostalCodeKey, "label": Place.AddressPostalCodeKey.capitalized, "type":"String", "required":"false"],
+                    ["name": Place.AddressCountryKey, "label": Place.AddressCountryKey.capitalized, "type":"String", "required":"false"]]],
                 ["name":"description", "label": "Description", "type":"String", "required":"false"],
                 ["name":"phone", "label": "Phone Number", "type":"String", "required":"false"],
                 ["name":"url", "label": "Site", "type":"String", "required":"false"],
