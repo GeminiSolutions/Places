@@ -159,4 +159,15 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
         guard json.keys.contains("longitude") else { return false }
         return true
     }
+
+    class public var Fields: [[String:String]] {
+        return [["name":"name", "label": "Name", "type":"String", "required":"true"],
+                ["name":"address", "label": "Address", "type":"Dictionary<String:String>", "required":"false"],
+                ["name":"description", "label": "Description", "type":"String", "required":"false"],
+                ["name":"phone", "label": "Phone Number", "type":"String", "required":"false"],
+                ["name":"url", "label": "Site", "type":"String", "required":"false"],
+                ["name":"tags", "label": "Tags", "type":"Array<String>", "required":"false"],
+                ["name":"latitude", "label" :"Latitude", "type":"Double", "required":"true"],
+                ["name":"longitude", "label": "Longitude", "type":"Double", "required":"true"]]
+    }
 }

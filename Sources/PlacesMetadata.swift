@@ -20,6 +20,15 @@ public class PlacesMetadata: DataStoreContentJSONDictionary<String,Any> {
         super.init(json: content)
     }
 
+    public var fields: [[String:String]]? {
+        get {
+            return content["fields"] as? [[String:String]]
+        }
+        set {
+            set(newValue, for: "fields")
+        }
+    }
+
     public var tags: [String]? {
         get {
             return content["tags"] as? [String]
