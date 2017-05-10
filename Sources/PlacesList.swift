@@ -22,7 +22,7 @@ public class PlacesList: DataStoreContentJSONArray<[String:Any]> {
     }
 
     public init(placesData: [(place: Place.JSONObjectType, id: Place.PlaceIdType, lastUpdate: Date)]) {
-        let places = placesData.map({ return ["place":$0.place, "id":Place.stringFromPlaceId($0.id), "lastUpdate":DataStore.dateString(from: $0.lastUpdate)] })
+        let places = placesData.map({ return ["place":$0.place, "id":Place.stringFromPlaceId($0.id), "lastUpdate":PlacesList.dateString(from: $0.lastUpdate)] })
         super.init(json: places)
     }
 
@@ -37,12 +37,12 @@ public class PlacesList: DataStoreContentJSONArray<[String:Any]> {
 
     public func append(place: Place) {
         guard let id = place.id, let lastUpdate = place.lastUpdate else { return }
-        append(["place":place.content, "id":Place.stringFromPlaceId(id), "lastUpdate":DataStore.dateString(from: lastUpdate)])
+        append(["place":place.content, "id":Place.stringFromPlaceId(id), "lastUpdate":PlacesList.dateString(from: lastUpdate)])
     }
 
     private func place(from data: [String:Any]) -> Place? {
         guard let content = data["place"] as? Place.JSONObjectType, let id = data["id"] as? String, let lastUpdate = data["lastUpdate"] as? String else { return nil }
-        guard let placeId = Place.placeIdFromString(id), let placeLastUpdate = DataStore.date(from: lastUpdate) else { return nil }
+        guard let placeId = Place.placeIdFromString(id), let placeLastUpdate = PlacesList.date(from: lastUpdate) else { return nil }
         guard let place = Place(content: content) else { return nil }
         place.id = placeId
         place.lastUpdate = placeLastUpdate
