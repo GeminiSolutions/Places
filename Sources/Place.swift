@@ -18,9 +18,8 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
     public static let AddressPostalCodeKey = "postal_code"
     public static let AddressCountryKey = "counutry"
     
-    public var lastModified: Date?
-
     public var id: PlaceIdType?
+    public var lastUpdate: Date?
 
     public var name: String? {
         get {
@@ -149,7 +148,7 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
         return PlaceIdType(string)
     }
 
-    class public func stringFromPlaceId(_ placeId: PlaceIdType) -> String? {
+    class public func stringFromPlaceId(_ placeId: PlaceIdType) -> String {
         return String(placeId)
     }
     

@@ -8,12 +8,11 @@
 import Foundation
 import DataStore
 
-public class PlacesList: DataStoreContentJSONArray<Place.JSONObjectType> {
+public class PlacesList: DataStoreContentJSONArray<[String:Any]> {
     public var places: [Place] {
         var places: [Place] = []
         content.forEach {
-            guard let place = Place(content: $0) else { return }
-            places.append(place)
+            if let place = place(from: $0) { places.append(place) }
         }
         return places
     }
@@ -22,31 +21,31 @@ public class PlacesList: DataStoreContentJSONArray<Place.JSONObjectType> {
         super.init()
     }
 
-    public init(places: [Place.JSONObjectType]) {
+    public init(placesData: [(place: Place.JSONObjectType, id: Place.PlaceIdType, lastUpdate: Date)]) {
+        let places = placesData.map({ return ["place":$0.place, "id":Place.stringFromPlaceId($0.id), "lastUpdate":DataStore.dateString(from: $0.lastUpdate)] })
         super.init(json: places)
     }
 
     public func place(for id: Place.PlaceIdType) -> Place? {
-        for placeContent in content {
-            guard let place = Place(content: placeContent) else { continue }
-            guard place.id != id else { return place }
+        for data in content {
+            if let idStr = data["id"] as? String, let placeId = Place.placeIdFromString(idStr), placeId == id {
+                return place(from: data)
+            }
         }
         return nil
     }
 
     public func append(place: Place) {
-        append(place.content)
+        guard let id = place.id, let lastUpdate = place.lastUpdate else { return }
+        append(["place":place.content, "id":Place.stringFromPlaceId(id), "lastUpdate":DataStore.dateString(from: lastUpdate)])
     }
 
-    public func remove(place: Place) {
-        guard let id = place.id else { return }
-        remove(placeWithId: id)
-    }
-
-    public func remove(placeWithId id: Place.PlaceIdType) {
-        if let index = content.index(where: {
-            guard let place = Place(content: $0) else { return false }
-            return place.id == id
-        }) { remove(at: index) }
+    private func place(from data: [String:Any]) -> Place? {
+        guard let content = data["place"] as? Place.JSONObjectType, let id = data["id"] as? String, let lastUpdate = data["lastUpdate"] as? String else { return nil }
+        guard let placeId = Place.placeIdFromString(id), let placeLastUpdate = DataStore.date(from: lastUpdate) else { return nil }
+        guard let place = Place(content: content) else { return nil }
+        place.id = placeId
+        place.lastUpdate = placeLastUpdate
+        return place
     }
 }
