@@ -8,16 +8,10 @@
 import Foundation
 import DataStore
 
-public class Place: DataStoreContentJSONDictionary<String,Any> {
+open class Place: DataStoreContentJSONDictionary<String,Any> {
     public typealias PlaceIdType = Int
     public typealias JSONObjectType = [String:Any]
 
-    public static let AddressStreetKey = "street"
-    public static let AddressCityKey = "city"
-    public static let AddressStateKey = "state"
-    public static let AddressPostalCodeKey = "postal_code"
-    public static let AddressCountryKey = "country"
-    
     public var id: PlaceIdType?
     public var lastUpdate: Date?
 
@@ -30,57 +24,12 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
         }
     }
 
-    public var addressDictionary: [String:String]? {
-        get {
-            return content["address"] as? [String:String]
-        }
-        set {
-            set(newValue, for: "address")
-        }
-    }
-
-    public var description: String? {
-        get {
-            return content["description"] as? String
-        }
-        set {
-            set(newValue, for: "description")
-        }
-    }
-
-    public var phoneNumber: String? {
-        get {
-            return content["phone"] as? String
-        }
-        set {
-            set(newValue, for: "phone")
-        }
-    }
-
-    public var url: String? {
-        get {
-            return content["url"] as? String
-        }
-        set {
-            set(newValue, for: "url")
-        }
-    }
-
     public var tags: [String]? {
         get {
             return content["tags"] as? [String]
         }
         set {
             set(newValue, for: "tags")
-        }
-    }
-
-    public var mediaItems: [String]? {
-        get {
-            return content["media"] as? [String]
-        }
-        set {
-            set(newValue, for: "media")
         }
     }
 
@@ -92,7 +41,7 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
             set(newValue, for: "latitude")
         }
     }
-    
+
     public var longitude: Double? {
         get {
             return content["longitude"] as? Double
@@ -101,7 +50,7 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
             set(newValue, for: "longitude")
         }
     }
-    
+
     public var coordinate: PlaceCoordinate2D? {
         get {
             guard let latitude = self.latitude, let longitude = self.longitude else { return nil }
@@ -113,33 +62,11 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
         }
     }
 
-    public var formattedAddress: String? {
-        var addressComponents = [String]()
-        
-        if let street = addressDictionary?[Place.AddressStreetKey] {
-            addressComponents.append(street)
-        }
-        if let city = addressDictionary?[Place.AddressCityKey] {
-            addressComponents.append(city)
-        }
-        if let postalCode = addressDictionary?[Place.AddressPostalCodeKey] {
-            addressComponents.append(postalCode)
-        }
-        if let state = addressDictionary?[Place.AddressStateKey] {
-            addressComponents.append(state)
-        }
-        if let country = addressDictionary?[Place.AddressCountryKey] {
-            addressComponents.append(country)
-        }
-
-        return addressComponents.joined(separator: ", ")
-    }
-
-    public override init() {
+    override public required init() {
         super.init()
     }
 
-    public init?(content: JSONObjectType) {
+    public required init?(content: JSONObjectType) {
         guard Place.validate(content) else { return nil }
         super.init(json: content)
     }
@@ -152,24 +79,15 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
         return String(placeId)
     }
     
-    class public func validate(_ json: JSONObjectType) -> Bool {
+    class open func validate(_ json: JSONObjectType) -> Bool {
         guard json.keys.contains("name") else { return false }
         guard json.keys.contains("latitude") else { return false }
         guard json.keys.contains("longitude") else { return false }
         return true
     }
 
-    class public var Fields: [[String:Any]] {
+    class open var Fields: [[String:Any]] {
         return [["name":"name", "label": "Name", "type":"String", "required":"true"],
-                ["name":"address", "label": "Address", "type":"Dictionary<String:String>", "required":"false", "fields" : [
-                    ["name": Place.AddressStreetKey, "label": Place.AddressStreetKey.capitalized, "type":"String", "required":"false"],
-                    ["name": Place.AddressCityKey, "label": Place.AddressCityKey.capitalized, "type":"String", "required":"false"],
-                    ["name": Place.AddressStateKey, "label": Place.AddressStateKey.capitalized, "type":"String", "required":"false"],
-                    ["name": Place.AddressPostalCodeKey, "label": Place.AddressPostalCodeKey.capitalized, "type":"String", "required":"false"],
-                    ["name": Place.AddressCountryKey, "label": Place.AddressCountryKey.capitalized, "type":"String", "required":"false"]]],
-                ["name":"description", "label": "Description", "type":"String", "required":"false"],
-                ["name":"phone", "label": "Phone Number", "type":"String", "required":"false"],
-                ["name":"url", "label": "Site", "type":"String", "required":"false"],
                 ["name":"tags", "label": "Tags", "type":"Array<String>", "required":"false"],
                 ["name":"latitude", "label" :"Latitude", "type":"Double", "required":"true"],
                 ["name":"longitude", "label": "Longitude", "type":"Double", "required":"true"]]

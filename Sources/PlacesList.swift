@@ -9,14 +9,6 @@ import Foundation
 import DataStore
 
 public class PlacesList: DataStoreContentJSONArray<[String:Any]> {
-    public var places: [Place] {
-        var places: [Place] = []
-        content.forEach {
-            if let place = place(from: $0) { places.append(place) }
-        }
-        return places
-    }
-
     public override init() {
         super.init()
     }
@@ -26,7 +18,15 @@ public class PlacesList: DataStoreContentJSONArray<[String:Any]> {
         super.init(json: places)
     }
 
-    public func place(for id: Place.PlaceIdType) -> Place? {
+    public func places<PlaceType: Place>() -> [PlaceType] {
+        var places: [PlaceType] = []
+        content.forEach {
+            if let place: PlaceType = place(from: $0) { places.append(place) }
+        }
+        return places
+    }
+
+    public func place<PlaceType: Place>(for id: Place.PlaceIdType) -> PlaceType? {
         for data in content {
             if let idStr = data["id"] as? String, let placeId = Place.placeIdFromString(idStr), placeId == id {
                 return place(from: data)
@@ -40,10 +40,10 @@ public class PlacesList: DataStoreContentJSONArray<[String:Any]> {
         append(["place":place.content, "id":Place.stringFromPlaceId(id), "lastUpdate":PlacesList.dateString(from: lastUpdate)])
     }
 
-    private func place(from data: [String:Any]) -> Place? {
+    private func place<PlaceType: Place>(from data: [String:Any]) -> PlaceType? {
         guard let content = data["place"] as? Place.JSONObjectType, let id = data["id"] as? String, let lastUpdate = data["lastUpdate"] as? String else { return nil }
         guard let placeId = Place.placeIdFromString(id), let placeLastUpdate = PlacesList.date(from: lastUpdate) else { return nil }
-        guard let place = Place(content: content) else { return nil }
+        guard let place = PlaceType(content: content) else { return nil }
         place.id = placeId
         place.lastUpdate = placeLastUpdate
         return place
