@@ -16,7 +16,7 @@ public class Place: DataStoreContentJSONDictionary<String,Any> {
     public static let AddressCityKey = "city"
     public static let AddressStateKey = "state"
     public static let AddressPostalCodeKey = "postal_code"
-    public static let AddressCountryKey = "counutry"
+    public static let AddressCountryKey = "country"
     
     public var id: PlaceIdType?
     public var lastUpdate: Date?
