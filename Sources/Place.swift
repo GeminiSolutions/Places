@@ -8,7 +8,7 @@
 import Foundation
 import DataStore
 
-open class Place: DataStoreContentJSONDictionary<String,Any> {
+open class Place: DSContentJSONDictionary<String,Any> {
     public typealias PlaceIdType = Int
     public typealias JSONObjectType = [String:Any]
 
